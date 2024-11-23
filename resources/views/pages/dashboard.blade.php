@@ -137,7 +137,7 @@
                                     <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
                                         <i class="ni ni-camera-compact text-dark opacity-10"></i>
                                     </div>
-                                    <h5 class="text-white mb-1">Bắt đầu đến với NQTComics</h5>
+                                    <h5 class="text-white mb-1">Bắt đầu đến với Truyen 18</h5>
                                     <p>Làm theme đa dạng cho bạn. Nếu muốn đổi theme chỉ cần liên hệ cho tôi.</p>
                                 </div>
                             </div>

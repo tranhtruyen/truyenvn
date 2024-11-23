@@ -17,13 +17,13 @@ class SeoSeeder extends Seeder
             [
                 'key' => 'title',
                 'name' => 'Tiêu đề',
-                'value' => 'NQTComics đọc truyện miễn phí',
+                'value' => 'Truyen 18 đọc truyện miễn phí',
                 'group' => 'general'
             ],
             [
                 'key' => 'site_name',
                 'name' => 'Meta Site name',
-                'value' => 'NQTComics',
+                'value' => 'Truyen 18',
                 'group' => 'general'
             ],
             [
@@ -41,7 +41,7 @@ class SeoSeeder extends Seeder
             [
                 'key' => 'description',
                 'name' => 'Meta description',
-                'value' => 'NQTComics đọc truyện miễn phí',
+                'value' => 'Truyen 18 đọc truyện miễn phí',
                 'group' => 'general'
             ],
             [
