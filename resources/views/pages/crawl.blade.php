@@ -163,9 +163,15 @@
                     }
                 });
             }
+
+
+        }
+        function buildLinkFromTheLoai(items){
+            const baseUrl = "https://otruyenapi.com/v1/api/truyen-tranh/";
+            return items.map(item => `${baseUrl}${item.slug}`);
         }
         let urlHome = "https://otruyenapi.com/v1/api/danh-sach";
-        $('#apiForm').on('submit', function(event) {
+        $('#apiForm').on('submit', async function(event) {
             event.preventDefault();
             let submitButton = $(this).find('button[type="submit"]');
             submitButton.prop('disabled', true).text('Đang crawl...');
@@ -174,7 +180,7 @@
             $(".alert-danger").addClass("d-none");
             $('#movie-list').html("");
             $('.selected-movie-count').text("0");
-            $('.total-movie-count').text("0");
+            $('.total-movie-count').text("0")
             if(linkValue.includes(urlHome)) {
                 crawlHomePage(linkValue, submitButton);
             } else {
@@ -183,6 +189,11 @@
                     $(".alert-danger").removeClass("d-none");
                     $(".message-error").text("Không được chứa link: " + urlHome);
                     submitButton.prop('disabled', false).text('Tải');
+                }else if(links[0].includes("the-loai")){
+                    let data = await (await fetch(links)).json();
+                    debugger;
+                    let items = buildLinkFromTheLoai(data.data.items);
+                    crawlMultiLink(items, submitButton);
                 }else{
                     crawlMultiLink(links, submitButton);
                 }

@@ -21,6 +21,9 @@ use App\Models\Chapter;
 
 class CrawlController extends Controller
 {
+    const TITLE = " oline mới nhất, nhanh nhất";
+
+    const CONTENT = " Đọc truyện [name], bản đẹp, cập nhật nhanh nhất tại truyen18. Cùng khám phá hành trình của các nhân vật chính";
     public function addComicByCrawl(Request $request)
     {
         $checkComic = DB::table('comics')->where('slug', $request->slug)->first();
@@ -40,7 +43,7 @@ class CrawlController extends Controller
         $comic->origin_name = $request->origin_name;
         $comic->status = $request->status;
         $comic->thumbnail = $request->thumbnail;
-        $comic->content = $request->content;
+        $comic->content = str_replace("[name]",$request->name,$this->getContent($request->content));
         $comic->save();
 
         // Add Category
@@ -223,5 +226,13 @@ class CrawlController extends Controller
                 ],
             ],
         ]);
+    }
+
+    protected function getContent($content)
+    {
+        if(stripos($content, "NetTruyen") !== false || stripos($content, "TruyenQQ") !== false ){
+            return self::CONTENT.$content;
+        }
+        return self::CONTENT;
     }
 }

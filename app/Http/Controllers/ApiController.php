@@ -17,9 +17,13 @@ use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
+    const TITLE = " oline mới nhất, nhanh nhất";
+
+    const CONTENT = " Đọc truyện [name], bản đẹp, cập nhật nhanh nhất tại truyen18. Cùng khám phá hành trình của các nhân vật chính";
     public function crawlOTruyen()
     {
         set_time_limit(10000);
+        $comicName = '';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://otruyenapi.com/v1/api/danh-sach');
         $data = json_decode($response->getBody()->getContents(), true);
@@ -36,6 +40,7 @@ class ApiController extends Controller
             $response = $client->request('GET', env('LINK_OTRUYEN_API').$item['slug']);
             $data = json_decode($response->getBody()->getContents(), true);
             $data = $data['data'];
+            $comicName =  $data['item']['name'];
             if($checkComic){
                 $idComic = $checkComic->id;
                 $comics[] = [
@@ -44,9 +49,9 @@ class ApiController extends Controller
                 ];
             }else{
                 $idComic = DB::table('comics')->insertGetId([
-                    'name' => $data['item']['name'],
+                    'name' => $data['item']['name'].self::TITLE,
                     'slug' => $data['item']['slug'],
-                    'content' => $data['item']['content'],
+                    'content' => str_replace("[name]",$data['item']['name'],$this->getContent($data['item']['content'])),
                     'status' => $data['item']['status'],
                     'thumbnail' => $data['seoOnPage']['seoSchema']['image'],
                     'created_at' => now(),
@@ -93,7 +98,7 @@ class ApiController extends Controller
                 $data = json_decode($response->getBody()->getContents(), true);
                 $data = $data['data'];
                 $idChapter = DB::table('chapters')->insertGetId([
-                    'name' => $data['item']['chapter_name'],
+                    'name' => $data['item']['chapter_name']."-".$comicName,
                     'slug' => 'chuong-'.$data['item']['chapter_name'],
                     'comic_id' => $comic['idComic'],
                     'server' => 'VIP #1',
@@ -156,4 +161,11 @@ class ApiController extends Controller
         $sitemapIndex->writeToFile(public_path('sitemap.xml'));
     }
 
+    protected function getContent($content)
+    {
+        if(stripos($content, "nettruyen") !== false || stripos($content, "TruyenQQ") !== false ){
+            return self::CONTENT.$content;
+        }
+        return self::CONTENT;
+    }
 }

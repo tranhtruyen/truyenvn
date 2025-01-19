@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/test', [\App\Http\Controllers\TestController::class, 'index'])->name('test');
 Route::middleware('checkLogin')->group(function () {
     Route::middleware('checkAdmin')->group(function () {
         Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
@@ -120,3 +120,5 @@ Route::get('/tac-gia/{slug}', [HomeController::class, 'showAuthor'])->name('show
 Route::get('/danh-sach/{slug}', [HomeController::class, 'showList'])->name('showList');
 
 Route::get('/{slug}/{chapter}', [HomeController::class, 'showReadComicPage'])->name('showRead');
+
+
